@@ -1,6 +1,7 @@
+# -*- coding: utf-8 -*-
 import dash
 import dash_core_components as dcc
-import dash_daq as daq
+#import dash_daq as daq
 import dash_html_components as html
 from dash.dependencies import Input, Output
 
@@ -19,7 +20,6 @@ X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
 
 regressor = LinearRegression()  
 regressor.fit(X_train, Y_train) 
-# -*- coding: utf-8 -*-
 
 
 
@@ -122,20 +122,20 @@ dcc.Slider(id='research-slider',
         1: {'label': '1'},
                                 
     }),
-],className="pretty_container four columns"),
+],className="pretty_container four columns")
 
-  html.Div([ 
+  #html.Div([ 
 
-    daq.Gauge(
-        id='my-gauge',
-        showCurrentValue=True,
-        color={"gradient":True,"ranges":{"red":[0,0.4],"yellow":[0.4,0.7],"green":[0.7,1]}},
-        label="Probability",
-        max=1,
-        min=0,
-        value=1
-    ),
-])
+   # daq.Gauge(
+    #    id='my-gauge',
+     #   showCurrentValue=True,
+      #  color={"gradient":True,"ranges":{"red":[0,0.4],"yellow":[0.4,0.7],"green":[0.7,1]}},
+       # label="Probability",
+        #max=1,
+        #min=0,
+        #value=1
+    #),
+#])
     ])
 
 
