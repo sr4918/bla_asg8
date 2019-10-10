@@ -1,3 +1,6 @@
+dash-daq
+matplotlib
+sklearn
 certifi==2019.6.16
 chardet==3.0.4
 Click==7.0
