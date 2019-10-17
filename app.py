@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-import os
-os.getcwd()
-os.chdir('C:/Users/samee/Dropbox/NYU-PhD/3. Fall 2019/Building Learning Applications/Assignment/Assignment 6')
 import dash
 import dash_core_components as dcc
 import dash_daq as daq
