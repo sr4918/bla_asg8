@@ -5,13 +5,15 @@ import dash_daq as daq
 import dash_html_components as html
 from dash.dependencies import Input, Output
 
+# -*- coding: utf-8 -*-
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-df = pd.read_csv("Student_Performance_Reshaped.csv")
-X = pd.DataFrame(df, columns=['Paper 1','Paper 2','Paper 3','Paper 4','Paper 5','Paper 6'])
-Y=pd.DataFrame(df, columns=['Paper 7'])
+df = pd.read_csv("intelligent_st.csv")
+X = pd.DataFrame(df, columns=['fac1','fac2','fac3', 'fac4'])
+Y=pd.DataFrame(df, columns=['score'])
 
 
 from sklearn.decomposition import PCA
@@ -21,7 +23,7 @@ print(pca.explained_variance_ratio_)
 
 principalComponents = pca.transform(X)
 principalDf = pd.DataFrame(data=principalComponents, columns = ['principal component 1', 'principal component 2'])
-Y=df['Paper 7']
+Y=df['score']
 
 plt.scatter(x=principalDf['principal component 1'],y=principalDf['principal component 2'], c=Y, cmap="BuPu_r" )
 plt.xlabel('Principal Component 1')
@@ -44,7 +46,7 @@ print("Intercept:",regressor.intercept_)
 coeff_df = pd.DataFrame(regressor.coef_, X.columns, columns=['Coefficient'])  
 coeff_df
 Y_pred = regressor.predict(X_test)
-X_case =pd.DataFrame({'Paper 1':[1],'Paper 2':[5],'Paper 3':[1],'Paper 4':[1],'Paper 5':[1],'Paper 6':[1]})
+X_case =pd.DataFrame({'fac1':[1],'fac2':[1],'fac3':[1], 'fac4':[1]})
 Y_case=regressor.predict(X_case)
 Y_case[0]
 
@@ -55,91 +57,65 @@ server=app.server
 
 app.layout = html.Div([
         
-    html.H1('Predictor Paper 7 Marks'),
+    html.H1('Predictor Pass or Fail'),
         
     html.Div([   
-    html.Label('Paper 1'),
+    html.Label('fac1'),
     dcc.Slider(id='gre-slider',
-            min=0, max=100, step=20, value=0,
+            min=0, max=1, step=0.2, value=0,
                marks={
         0: {'label': '0'},
-        20: {'label': '20'},
-        40: {'label': '40'},
-        60: {'label': '60'},
-        80: {'label': '80'},
-        100: {'label': '100'},
+        .20: {'label': '.20'},
+        .40: {'label': '.40'},
+        .60: {'label': '.60'},
+        .80: {'label': '.80'},
+        1.00: {'label': '1.00'},
 
                                             
     }),
 
 html.Br(),
-html.Label('Paper 2'),
+html.Label('fac2'),
 dcc.Slider(id='toefl-slider',
-            min=0, max=100, step=20, value=10,
+            min=0, max=1, step=0.2, value=0,
                marks={
         0: {'label': '0'},
-        20: {'label': '20'},
-        40: {'label': '40'},
-        60: {'label': '60'},
-        80: {'label': '80'},
-        100: {'label': '100'},                               
+        0.2: {'label': '0.2'},
+        0.4: {'label': '0.4'},
+        0.6: {'label': '0.6'},
+        0.8: {'label': '0.8'},
+        1.0:{'label': '1.0'}
+                                       
     }),
 
 html.Br(),
-html.Label('Paper 3'),
+html.Label('fac3'),
 dcc.Slider(id='rating-slider',
-            min=0, max=100, step=20, value=20,
+            min=0, max=1, step=0.2, value=0.6,
                marks={
         0: {'label': '0'},
-        20: {'label': '20'},
-        40: {'label': '40'},
-        60: {'label': '60'},
-        80: {'label': '80'},
-        100: {'label': '100'},
+        0.2: {'label': '0.2'},
+        0.4: {'label': '0.4'},
+        0.6: {'label': '0.6'},
+        0.8: {'label': '0.8'},
+        1.0: {'label': '1.0'},
                                 
     }),
 
 html.Br(),
-html.Label('Paper 4'),
+html.Label('fac4'),
 dcc.Slider(id='sop-slider',
-           min=0, max=100, step=20, value=30,
+           min=0, max=1, step=0.2, value=0.2,
                marks={
         0: {'label': '0'},
-        20: {'label': '20'},
-        40: {'label': '40'},
-        60: {'label': '60'},
-        80: {'label': '80'},
-        100: {'label': '100'},
-                                
+        0.2: {'label': '0.2'},
+        0.4: {'label': '0.4'},
+        0.6: {'label': '0.6'},
+        0.8: {'label': '0.8'},
+        1.0: {'label': '1'},
+                                    
     }),
 
-html.Br(),
-html.Label('Paper 5'),
-dcc.Slider(id='lor-slider',
-                   min=0, max=100, step=20, value=40,
-               marks={
-        0: {'label': '0'},
-        20: {'label': '20'},
-        40: {'label': '40'},
-        60: {'label': '60'},
-        80: {'label': '80'},
-        100: {'label': '100'},
-                                
-    }),
-
-html.Br(),
-html.Label('Paper 6'),
-dcc.Slider(id='gpa-slider',
-            min=0, max=100, step=20, value=80,
-               marks={
-        0: {'label': '0'},
-        20: {'label': '20'},
-        40: {'label': '40'},
-        60: {'label': '60'},
-        80: {'label': '80'},
-        100: {'label': '100'},
-                                
-    }),
 
 ],className="pretty_container four columns"),
 
@@ -148,11 +124,11 @@ dcc.Slider(id='gpa-slider',
     daq.Gauge(
        id='my-gauge',
       showCurrentValue=True,
-     color={"gradient":True,"ranges":{"red":[0,40],"yellow":[40,70],"green":[70,100]}},
+     color={"gradient":True,"ranges":{"red":[-10,-5],"yellow":[-5,0.20],"green":[.20,1.00]}},
     label="Probability",
-   max=100,
+   max=1,
    min=0,
-   value=50
+   value=.50
    ),
 ])
     ])
@@ -163,17 +139,15 @@ dcc.Slider(id='gpa-slider',
     [Input('gre-slider', 'value'),
      Input('toefl-slider', 'value'),
      Input('rating-slider', 'value'),
-     Input('sop-slider', 'value'),
-     Input('lor-slider', 'value'),
-     Input('gpa-slider', 'value')
+     Input('sop-slider', 'value')
+    
      ])
 def update_output_div(P1,
                       P2,
                       P3,
                       P4,
-                      P5,
-                      P6):
-   X_case =pd.DataFrame({'Paper 1':[P1],'Paper 2':[P2],'Paper 3':[P3],'Paper 4':[P4],'Paper 5':[P5],'Paper 6':[P6]})
+                     ):
+   X_case =pd.DataFrame({'fac1':[P1],'fac2':[P2],'fac3':[P3],'fac4':[P4]})
    Y_case = regressor.predict(X_case)
 
    return Y_case[0]
